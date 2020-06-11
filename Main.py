@@ -11,16 +11,26 @@ root.resizable(False, False)
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
 treeview = ttk.Treeview(root, columns=["one", "two", "three"], displaycolumns=["one", "two", "three"])
 treeview.place(x=0, y=600)
+
+type = ttk.Combobox(root, width=10, textvariable=str)
+type['values'] = ('dd', 'ddd')
+type.place(x=0, y=575)
+type.current(0)
+
+DetailType = ttk.Combobox(root, width=10, textvariable=str)
+DetailType['values'] = ('dd' , 'ddd')
+DetailType.place(x=110, y=575)
+DetailType.current(0)
+
 # 콤보박스 부분 구현
-combo = ttk.Combobox(root, width=20, textvariable=str)
-combo['values'] = (
+sector = ttk.Combobox(root, width=9, textvariable=str)
+sector['values'] = (
     '수원시', '용인시', '성남시', '부천시', '화성시', '안산시', '안양시', '평택시', '시흥시', '김포시', '광주시', '광명시', '군포시'
     , '하남시', '오산시', '이천시', '안성시', '의왕시', '양평군', '여주시', '과천시', '고양시', '남양주시', '파주시', '의정부시', '양주시'
     , '구리시', '포천시', '동두천시', '가평군', '연천군'
 )
-combo.place(x=0, y=575)
-combo.current(0)
-
+sector.place(x=220, y=575)
+sector.current(0)
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
 treeview.heading("#0", text="번호", anchor="center")
