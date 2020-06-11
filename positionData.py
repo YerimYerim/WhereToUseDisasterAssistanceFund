@@ -1,14 +1,8 @@
-from tkinter import *
-
-# ﻿GUI창을 생성하고 라벨을 설정한다.
 from tkinter import ttk
 
-root = Tk()
-root.title("경기 지역화폐가맹점 검색 어플리케이션")
-root.geometry("800x800+100+100")
-root.resizable(False, False)
-
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
+from WhereToUseDisasterAssistanceFund.init import *
+
 treeview = ttk.Treeview(root, columns=["one", "two", "three"], displaycolumns=["one", "two", "three"])
 treeview.place(x=0, y=600)
 
@@ -18,7 +12,7 @@ type.place(x=0, y=575)
 type.current(0)
 
 DetailType = ttk.Combobox(root, width=10, textvariable=str)
-DetailType['values'] = ('dd' , 'ddd')
+DetailType['values'] = ('dd', 'ddd')
 DetailType.place(x=110, y=575)
 DetailType.current(0)
 
@@ -32,8 +26,8 @@ sector['values'] = (
 sector.place(x=220, y=575)
 sector.current(0)
 # 검색 부분 구현
-l1 = Button(root,text="검색")
-l1.place(x = 480 , y = 565)
+l1 = Button(root, text="검색")
+l1.place(x=480, y=565)
 e1 = Entry(root)
 e1.place(x=320, y=575)
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
