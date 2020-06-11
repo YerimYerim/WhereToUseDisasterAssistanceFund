@@ -31,6 +31,11 @@ sector['values'] = (
 )
 sector.place(x=220, y=575)
 sector.current(0)
+# 검색 부분 구현
+l1 = Button(root,text="검색")
+l1.place(x = 480 , y = 565)
+e1 = Entry(root)
+e1.place(x=320, y=575)
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
 treeview.heading("#0", text="번호", anchor="center")
