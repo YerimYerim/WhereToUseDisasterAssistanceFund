@@ -3,6 +3,7 @@ from tkinter import ttk
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
 from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
+Induutype = set()
 
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                         displaycolumns=["one", "two", "three"])
@@ -17,21 +18,18 @@ DetailType = ttk.Combobox(root, width=10, textvariable=str)
 DetailType['values'] = ('dd', 'ddd')
 DetailType.place(x=110, y=575)
 DetailType.current(0)
-
-# 콤보박스 부분 구현
-sector = ttk.Combobox(root, width=9, textvariable=str)
-sector['values'] = (
-    '수원시', '용인시', '성남시', '부천시', '화성시', '안산시', '안양시', '평택시', '시흥시', '김포시', '광주시', '광명시', '군포시'
-    , '하남시', '오산시', '이천시', '안성시', '의왕시', '양평군', '여주시', '과천시', '고양시', '남양주시', '파주시', '의정부시', '양주시'
-    , '구리시', '포천시', '동두천시', '가평군', '연천군'
-)
+treelist = list()
+GetDataFromURL(treelist , Induutype)
+# 콤보박스 부분 구현 - 업종
+sector = ttk.Combobox(root, width=12, textvariable=str)
+sector['values'] = list(Induutype)
 sector.place(x=220, y=575)
 sector.current(0)
 # 검색 부분 구현
 l1 = Button(root, text="검색")
-l1.place(x=480, y=565)
+l1.place(x=520, y=565)
 e1 = Entry(root)
-e1.place(x=320, y=575)
+e1.place(x=350, y=575)
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
 treeview.heading("#0", text="번호", anchor="center")
@@ -50,11 +48,11 @@ treeview.heading("구주소", text="구주소", anchor="center")
 treeview.heading("위도", text="위도", anchor="center")
 treeview.heading("경도", text="경도", anchor="center")
 # 표에 삽입될 데이터
-treelist = list()
-GetDataFromURL(treelist)
+
 
 # 표에 데이터 삽입
 for i in range(len(treelist)):
-    treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
+    if treelist[i][0] is not None:
+        treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
 
 # GUI 실행
