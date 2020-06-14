@@ -2,19 +2,6 @@ import urllib.request as ul
 import xml.etree.ElementTree as ET
 
 
-class put_data:
-    def __init__(self, name, indutype, road_addr, lotno_addr, lat, logt):
-        self.name = name
-        self.indutype = indutype
-        self.road_addr = road_addr
-        self.lotno_addr = lotno_addr
-        self.lat = lat
-        self.logt = logt
-
-    def __del__(self):
-        pass
-
-
 def GetDataFromURL(row=list):
     indexNum = 1
 
@@ -37,8 +24,8 @@ def GetDataFromURL(row=list):
                 n_lotno_addr = node.findtext('REFINE_LOTNO_ADDR')  # 지번주소
                 n_lat = node.findtext('REFINE_WGS84_LAT')  # 위도
                 n_logt = node.findtext('REFINE_WGS84_LOGT')  # 경도
-                data = put_data(n_name, n_indutype, n_road_addr, n_lotno_addr, n_lat, n_logt)
+                n_callNumber = node.findtext('TELNO')
+                data = [n_name, n_indutype, n_road_addr, n_callNumber, n_lotno_addr, n_lat, n_logt]
                 row.append(data)
 
         indexNum = indexNum + 1
-

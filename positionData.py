@@ -1,9 +1,11 @@
 from tkinter import ttk
 
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
+from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
 
-treeview = ttk.Treeview(root, columns=["one", "two", "three"], displaycolumns=["one", "two", "three"])
+treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
+                        displaycolumns=["one", "two", "three"])
 treeview.place(x=0, y=600)
 
 type = ttk.Combobox(root, width=10, textvariable=str)
@@ -37,14 +39,19 @@ treeview.heading("#0", text="번호", anchor="center")
 treeview.column("#1", width=200, anchor="center")
 treeview.heading("one", text="가게이름", anchor="center")
 
-treeview.column("#2", width=300, anchor="center")
-treeview.heading("two", text="주소", anchor="center")
+treeview.column("#2", width=200, anchor="center")
+treeview.heading("two", text="업종명", anchor="center")
 
-treeview.column("#3", width=200, anchor="center")
-treeview.heading("three", text="전화번호", anchor="center")
+treeview.column("#3", width=300, anchor="center")
+treeview.heading("three", text="주소", anchor="center")
 
+
+treeview.heading("구주소", text="구주소", anchor="center")
+treeview.heading("위도", text="위도", anchor="center")
+treeview.heading("경도", text="경도", anchor="center")
 # 표에 삽입될 데이터
-treelist = [("Tom", 80, 3), ("Bani", 71, 5), ("Boni", 90, 2), ("Dannel", 78, 4), ("Minho", 93, 1)]
+treelist = list()
+GetDataFromURL(treelist)
 
 # 표에 데이터 삽입
 for i in range(len(treelist)):
