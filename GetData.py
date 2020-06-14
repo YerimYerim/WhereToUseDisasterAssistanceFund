@@ -12,7 +12,6 @@ def GetDataFromURL(row=list):
         request = ul.Request(url)  # url 데이터 요청
         response = ul.urlopen(request)  # 요청받은 데이터 열어줌
         res = response.getcode()  # 제대로 데이터가 수신됐는지 확인하는 코드 성공시 200
-
         if res == 200:
             responseData = response.read()
             tree = ET.fromstring(responseData)
