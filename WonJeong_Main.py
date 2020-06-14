@@ -1,4 +1,4 @@
-from GetData import GetDataFromURL, rows
+from WhereToUseDisasterAssistanceFund.GetData import GetDataFromURL, rows
 
 GetDataFromURL()
 

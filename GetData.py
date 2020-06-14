@@ -1,8 +1,6 @@
 import urllib.request as ul
 import xml.etree.ElementTree as ET
 
-global rows
-
 
 class put_data:
     def __init__(self, name, indutype, road_addr, lotno_addr, lat, logt):
@@ -17,10 +15,8 @@ class put_data:
         pass
 
 
-def GetDataFromURL():
+def GetDataFromURL(row=list):
     indexNum = 1
-    global rows
-    rows = []
 
     while indexNum != 11:
         url = "https://openapi.gg.go.kr/RegionMnyFacltStus?KEY=a7f5f144889643fcab0acf9caf2eccf8&pIndex=" \
@@ -41,8 +37,8 @@ def GetDataFromURL():
                 n_lotno_addr = node.findtext('REFINE_LOTNO_ADDR')  # 지번주소
                 n_lat = node.findtext('REFINE_WGS84_LAT')  # 위도
                 n_logt = node.findtext('REFINE_WGS84_LOGT')  # 경도
-
                 data = put_data(n_name, n_indutype, n_road_addr, n_lotno_addr, n_lat, n_logt)
-                rows.append(data)
+                row.append(data)
 
         indexNum = indexNum + 1
+
