@@ -20,16 +20,21 @@ DetailType.place(x=110, y=575)
 DetailType.current(0)
 treelist = list()
 GetDataFromURL(treelist , Induutype)
+
 # 콤보박스 부분 구현 - 업종
 sector = ttk.Combobox(root, width=12, textvariable=str)
 sector['values'] = list(Induutype)
 sector.place(x=220, y=575)
 sector.current(0)
-# 검색 부분 구현
+
+# 검색버튼
 l1 = Button(root, text="검색")
 l1.place(x=520, y=565)
+
+# 검색 창
 e1 = Entry(root)
 e1.place(x=350, y=575)
+
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
 treeview.heading("#0", text="번호", anchor="center")
