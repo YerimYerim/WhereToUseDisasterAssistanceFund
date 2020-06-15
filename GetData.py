@@ -2,12 +2,12 @@ import urllib.request as ul
 import xml.etree.ElementTree as ET
 
 
-def GetDataFromURL(row=list , Induutype = set):
+def GetDataFromURL(row=list, Induutype=set):
     indexNum = 1
 
     while indexNum != 11:
         url = "https://openapi.gg.go.kr/RegionMnyFacltStus?KEY=a7f5f144889643fcab0acf9caf2eccf8&pIndex=" \
-              + indexNum.__str__() + "&psize=1000&SIGUN_NM=%EC%8B%9C%ED%9D%A5%EC%8B%9C"
+              + indexNum.__str__() + "&psize=1000&SIGUN_CD=41390"
 
         request = ul.Request(url)  # url 데이터 요청
         response = ul.urlopen(request)  # 요청받은 데이터 열어줌
@@ -30,5 +30,5 @@ def GetDataFromURL(row=list , Induutype = set):
                 data = [n_name, n_indutype, n_road_addr, n_callNumber, n_lotno_addr, n_lat, n_logt]
                 row.append(data)
 
-        indexNum = indexNum + 1
+        indexNum += 1
 
