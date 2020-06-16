@@ -19,7 +19,7 @@ DetailType['values'] = ('dd', 'ddd')
 DetailType.place(x=110, y=575)
 DetailType.current(0)
 treelist = list()
-GetDataFromURL(treelist , Induutype)
+GetDataFromURL(treelist, Induutype)
 
 # 콤보박스 부분 구현 - 업종
 sector = ttk.Combobox(root, width=12, textvariable=str)

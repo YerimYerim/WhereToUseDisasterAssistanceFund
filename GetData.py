@@ -2,7 +2,7 @@ import urllib.request as ul
 import xml.etree.ElementTree as ET
 
 
-def GetDataFromURL(row=list, Induutype=set):
+def GetDataFromURL(row=list, Indutype=set):
     indexNum = 1
 
     while indexNum != 11:
@@ -21,7 +21,7 @@ def GetDataFromURL(row=list, Induutype=set):
                 n_name = node.findtext('CMPNM_NM')  # 상호명
                 n_indutype = node.findtext('INDUTYPE_NM')  # 업종명
                 if n_indutype is not None:
-                    Induutype.add(n_indutype)
+                    Indutype.add(n_indutype)
                 n_road_addr = node.findtext('REFINE_ROADNM_ADDR')  # 도로명주소
                 n_lotno_addr = node.findtext('REFINE_LOTNO_ADDR')  # 지번주소
                 n_lat = node.findtext('REFINE_WGS84_LAT')  # 위도
