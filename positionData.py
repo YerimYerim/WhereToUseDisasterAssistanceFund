@@ -3,6 +3,7 @@ from tkinter import ttk
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
 from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
+from WhereToUseDisasterAssistanceFund.getMapData import *
 Induutype = set()
 
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
@@ -34,6 +35,12 @@ l1.place(x=520, y=565)
 # 검색 창
 e1 = Entry(root)
 e1.place(x=350, y=575)
+
+# 지도
+m_image = showMap(37.4387767330, 126.7820485341)    # 임의의 값, 검색 기능 구현 후 수정
+label = Label(root, image=m_image, height=600, width=800)
+label.pack()
+label.place(x=0, y=0)
 
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
