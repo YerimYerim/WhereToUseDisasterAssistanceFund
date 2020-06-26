@@ -5,7 +5,6 @@ from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
 from WhereToUseDisasterAssistanceFund.getMapData import *
 
-
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                         displaycolumns=["one", "two", "three"])
 Induutype = set()
@@ -21,11 +20,10 @@ def search():
 
     for i in range(len(treelist)):
         if treelist[i][0] is not None:
-            if str(treelist[i][0]).__contains__(searchBar.get()) :
-                print(searchBar.get()+"찾음")
+            if str(treelist[i][0]).__contains__(searchBar.get()):
+                print(searchBar.get() + "찾음")
                 treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
     print(searchBar.get())
-
 
 
 def inputData():
@@ -56,7 +54,6 @@ restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
 
 l1 = Button(searchFrame, text="검색", command=search)
 l1.pack(side=RIGHT, expand=FALSE, fill=X)
-
 
 # 검색 창
 
