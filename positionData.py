@@ -43,9 +43,12 @@ e1 = Entry(root)
 e1.place(x=350, y=575)
 
 # 지도
-m_image = showMap(37.4387767330, 126.7820485341)    # 임의의 값, 검색 기능 구현 후 수정
-label = Label(root, image=m_image, height=600, width=800)
-label.pack(side=TOP,expand=True,fill=BOTH)
+m_zoom = 17      # 기본 확대값
+m_image = showMap(37.4387767330, 126.7820485341, m_zoom)    # 임의의 값, 검색 기능 구현 후 수정
+
+label = Label(root, image=m_image)
+label.pack(side=TOP, expand=True, fill=BOTH)
+label.place(x=0, y=0)
 
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
