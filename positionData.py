@@ -7,8 +7,11 @@ from WhereToUseDisasterAssistanceFund.getMapData import *
 
 
 def selected(treeview, searchBar):
+    treeview.delete()
     treeview.selection_set(treeview.tag_has(searchBar.get()))
     print(treeview.tag_has(searchBar.get()))
+
+
 
 
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
@@ -16,12 +19,28 @@ treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소
 Induutype = set()
 treelist = list()
 GetDataFromURL(treelist, Induutype)
+
+
 # 표에 데이터 삽입
-for i in range(len(treelist)):
-    if treelist[i][0] is not None:
-        treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
+def search():
+    for i in range(len(treelist)):
+        if treelist[i][0] is not None:
+            if treelist[i][0] == searchBar.get():
+                print(searchBar.get()+"찾음")
+                treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
+    print(searchBar.get())
+
+
+
+def inputData():
+    for i in range(len(treelist)):
+        if treelist[i][0] is not None:
+            treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
+    return treeview
+
 
 # 스크롤바
+treeview = inputData()
 vbar = Scrollbar(treeview, orient=VERTICAL)
 vbar.pack(side=RIGHT, fill=Y)
 vbar.config(command=treeview.yview)
@@ -33,7 +52,7 @@ searchFrame = Frame(root)
 searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
 # 검색버튼
 searchBar = Entry(searchFrame)
-l1 = Button(searchFrame, text="검색", command=selected(treeview, searchBar))
+l1 = Button(searchFrame, text="검색", command=search)
 l1.pack(side=RIGHT, expand=FALSE, fill=X)
 # 검색 창
 
@@ -50,9 +69,9 @@ DetailType.pack(side=RIGHT, expand=FALSE, fill=X)
 DetailType.current(0)
 
 # 지도
-m_image = showMap(37.4387767330, 126.7820485341)  # 임의의 값, 검색 기능 구현 후 수정
-label = Label(root, image=m_image, height=600, width=800)
-label.pack(side=TOP, expand=True, fill=BOTH)
+# m_image = showMap(37.4387767330, 126.7820485341)  # 임의의 값, 검색 기능 구현 후 수정
+# label = Label(root, image=m_image, height=600, width=800)
+# label.pack(side=TOP, expand=True, fill=BOTH)
 
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
