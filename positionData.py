@@ -5,13 +5,21 @@ from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
 from WhereToUseDisasterAssistanceFund.getMapData import *
 
-Induutype = set()
-GetDataFromURL(treelist, Induutype)
+
+def selected(treeview, searchBar):
+    treeview.selection_set(treeview.tag_has(searchBar.get()))
+    print(treeview.tag_has(searchBar.get()))
+
 
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                         displaycolumns=["one", "two", "three"])
-
+Induutype = set()
 treelist = list()
+GetDataFromURL(treelist, Induutype)
+# 표에 데이터 삽입
+for i in range(len(treelist)):
+    if treelist[i][0] is not None:
+        treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
 
 # 스크롤바
 vbar = Scrollbar(treeview, orient=VERTICAL)
@@ -24,16 +32,16 @@ treeview.pack(side=BOTTOM, expand=True, fill=BOTH)
 searchFrame = Frame(root)
 searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
 # 검색버튼
-l1 = Button(searchFrame, text="검색")
+searchBar = Entry(searchFrame)
+l1 = Button(searchFrame, text="검색", command=selected(treeview, searchBar))
 l1.pack(side=RIGHT, expand=FALSE, fill=X)
 # 검색 창
-e1 = Entry(searchFrame)
-e1.pack(side=RIGHT, expand=TRUE, fill=X)
+
+searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
 # 콤보박스 부분 구현 - 업종
 sector = ttk.Combobox(searchFrame, width=12, textvariable=str)
 sector['values'] = list(Induutype)
 sector.current(0)
-business = sector.get()
 sector.pack(side=RIGHT, expand=FALSE, fill=X)
 # 동 콤보박스
 DetailType = ttk.Combobox(searchFrame, width=10, textvariable=str)
@@ -50,11 +58,11 @@ label.pack(side=TOP, expand=True, fill=BOTH)
 treeview.column("#0", width=50, )
 treeview.heading("#0", text="번호", anchor="center")
 
-treeview.column("#1", width=200, anchor="center")
-treeview.heading("one", text="가게이름", anchor="center")
-
 treeview.column("#2", width=200, anchor="center")
-treeview.heading("two", text="업종명", anchor="center")
+treeview.heading("two", text="가게이름", anchor="center")
+
+treeview.column("#1", width=200, anchor="center")
+treeview.heading("one", text="업종명", anchor="center")
 
 treeview.column("#3", width=300, anchor="center")
 treeview.heading("three", text="주소", anchor="center")
@@ -62,11 +70,8 @@ treeview.heading("three", text="주소", anchor="center")
 treeview.heading("구주소", text="구주소", anchor="center")
 treeview.heading("위도", text="위도", anchor="center")
 treeview.heading("경도", text="경도", anchor="center")
-# 표에 삽입될 데이터
+
+# init(데이터 불러오고 디스플레이 완료)
 
 
-# 표에 데이터 삽입
-for i in range(len(treelist)):
-    if treelist[i][0] is not None:
-        treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
-# GUI 실행
+# 선택시
