@@ -4,48 +4,47 @@ from tkinter import ttk
 from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
 from WhereToUseDisasterAssistanceFund.getMapData import *
+
 Induutype = set()
+GetDataFromURL(treelist, Induutype)
 
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                         displaycolumns=["one", "two", "three"])
-treeview.place(x=0, y=600)
 
-type = ttk.Combobox(root, width=10, textvariable=str)
-type['values'] = ('dd', 'ddd')
-type.place(x=0, y=575)
-type.current(0)
-
-DetailType = ttk.Combobox(root, width=10, textvariable=str)
-DetailType['values'] = ('dd', 'ddd')
-DetailType.place(x=110, y=575)
-DetailType.current(0)
 treelist = list()
-GetDataFromURL(treelist, Induutype)
 
+# 스크롤바
+vbar = Scrollbar(treeview, orient=VERTICAL)
+vbar.pack(side=RIGHT, fill=Y)
+vbar.config(command=treeview.yview)
+# 표와 스크롤바 연동
+treeview.config(yscrollcommand=vbar.set)
+treeview.pack(side=BOTTOM, expand=True, fill=BOTH)
+# Frame
+searchFrame = Frame(root)
+searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
+# 검색버튼
+l1 = Button(searchFrame, text="검색")
+l1.pack(side=RIGHT, expand=FALSE, fill=X)
+# 검색 창
+e1 = Entry(searchFrame)
+e1.pack(side=RIGHT, expand=TRUE, fill=X)
 # 콤보박스 부분 구현 - 업종
-sector = ttk.Combobox(root, width=12, textvariable=str)
+sector = ttk.Combobox(searchFrame, width=12, textvariable=str)
 sector['values'] = list(Induutype)
-sector.place(x=220, y=575)
 sector.current(0)
 business = sector.get()
-#스크롤바
-vbar=Scrollbar(treeview,orient=VERTICAL)
-vbar.pack(side=RIGHT,fill=Y)
-vbar.config(command=treeview.yview)
-treeview.config(yscrollcommand=vbar.set)
-treeview.pack(side=BOTTOM,expand=True,fill=BOTH)
-# 검색버튼
-l1 = Button(root, text="검색")
-l1.pack(side=BOTTOM, expand=FALSE, fill=X)
-
-# 검색 창
-e1 = Entry(root)
-e1.place(x=350, y=575)
+sector.pack(side=RIGHT, expand=FALSE, fill=X)
+# 동 콤보박스
+DetailType = ttk.Combobox(searchFrame, width=10, textvariable=str)
+DetailType['values'] = ('dd', 'ddd')
+DetailType.pack(side=RIGHT, expand=FALSE, fill=X)
+DetailType.current(0)
 
 # 지도
-m_image = showMap(37.4387767330, 126.7820485341)    # 임의의 값, 검색 기능 구현 후 수정
+m_image = showMap(37.4387767330, 126.7820485341)  # 임의의 값, 검색 기능 구현 후 수정
 label = Label(root, image=m_image, height=600, width=800)
-label.pack(side=TOP,expand=True,fill=BOTH)
+label.pack(side=TOP, expand=True, fill=BOTH)
 
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
@@ -60,12 +59,10 @@ treeview.heading("two", text="업종명", anchor="center")
 treeview.column("#3", width=300, anchor="center")
 treeview.heading("three", text="주소", anchor="center")
 
-
 treeview.heading("구주소", text="구주소", anchor="center")
 treeview.heading("위도", text="위도", anchor="center")
 treeview.heading("경도", text="경도", anchor="center")
 # 표에 삽입될 데이터
-
 
 
 # 표에 데이터 삽입
