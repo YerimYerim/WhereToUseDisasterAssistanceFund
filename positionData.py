@@ -6,14 +6,6 @@ from WhereToUseDisasterAssistanceFund.init import *
 from WhereToUseDisasterAssistanceFund.getMapData import *
 
 
-def selected(treeview, searchBar):
-    treeview.delete()
-    treeview.selection_set(treeview.tag_has(searchBar.get()))
-    print(treeview.tag_has(searchBar.get()))
-
-
-
-
 treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                         displaycolumns=["one", "two", "three"])
 Induutype = set()
@@ -23,9 +15,13 @@ GetDataFromURL(treelist, Induutype)
 
 # 표에 데이터 삽입
 def search():
+    x = treeview.get_children()
+    for item in x:
+        treeview.delete(item)
+
     for i in range(len(treelist)):
         if treelist[i][0] is not None:
-            if treelist[i][0] == searchBar.get():
+            if str(treelist[i][0]).__contains__(searchBar.get()) :
                 print(searchBar.get()+"찾음")
                 treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
     print(searchBar.get())
@@ -33,6 +29,9 @@ def search():
 
 
 def inputData():
+    x = treeview.get_children()
+    for item in x:
+        treeview.delete(item)
     for i in range(len(treelist)):
         if treelist[i][0] is not None:
             treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
@@ -52,8 +51,13 @@ searchFrame = Frame(root)
 searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
 # 검색버튼
 searchBar = Entry(searchFrame)
+restartButton = Button(searchFrame, text="리셋", command=inputData)
+restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
+
 l1 = Button(searchFrame, text="검색", command=search)
 l1.pack(side=RIGHT, expand=FALSE, fill=X)
+
+
 # 검색 창
 
 searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
