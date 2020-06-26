@@ -4,13 +4,13 @@ import urllib.request as ul
 from tkinter import *
 from io import BytesIO
 import urllib
-from site_packages.PIL import ImageTk, Image
+from PIL import ImageTk, Image
 
 
 def showMap(m_lat, m_logt):
     url = "https://maps.googleapis.com/maps/api/staticmap?center=" + m_lat.__str__() + "," + m_logt.__str__() \
           + "&markers=color:red%7Clabel:S%7C" + m_lat.__str__() + "," + m_logt.__str__() \
-          + "&zoom=17&size=600x1000&maptype=roadmap&key=AIzaSyA8FMjUnTuZ_9wOse0NJS8TdEbNQP7yzHo"
+          + "&zoom=17&size=550x550&maptype=roadmap&key=AIzaSyA8FMjUnTuZ_9wOse0NJS8TdEbNQP7yzHo"
 
     with urllib.request.urlopen(url) as u:
         raw_data = u.read()

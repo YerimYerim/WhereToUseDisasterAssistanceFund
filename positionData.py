@@ -27,6 +27,7 @@ sector = ttk.Combobox(root, width=12, textvariable=str)
 sector['values'] = list(Induutype)
 sector.place(x=220, y=575)
 sector.current(0)
+business = sector.get()
 
 # 검색버튼
 l1 = Button(root, text="검색")
@@ -37,10 +38,10 @@ e1 = Entry(root)
 e1.place(x=350, y=575)
 
 # 지도
-m_image = showMap(37.4387767330, 126.7820485341)    # 임의의 값, 검색 기능 구현 후 수정
-label = Label(root, image=m_image, height=600, width=800)
-label.pack()
-label.place(x=0, y=0)
+#m_image = showMap(37.4387767330, 126.7820485341)    # 임의의 값, 검색 기능 구현 후 수정
+#label = Label(root, image=m_image, height=600, width=800)
+#label.pack()
+#label.place(x=0, y=0)
 
 # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
 treeview.column("#0", width=50, )
@@ -61,10 +62,10 @@ treeview.heading("위도", text="위도", anchor="center")
 treeview.heading("경도", text="경도", anchor="center")
 # 표에 삽입될 데이터
 
-
+vsb = ttk.Scrollbar(root, orient="vertical", command=treeview.yview)
+vsb.place(x=780, y = 575)
 # 표에 데이터 삽입
 for i in range(len(treelist)):
     if treelist[i][0] is not None:
         treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
-
 # GUI 실행
