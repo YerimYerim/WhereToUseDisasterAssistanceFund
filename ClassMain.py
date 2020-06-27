@@ -49,9 +49,9 @@ class Main:
         self.dong = set()
         self.searchFrame = Frame(root)
 
-        self.DongFrame = Frame(self.searchFrame,height = 10)
-        self.TypeFrame = Frame(self.searchFrame,height = 10)
-        self.SearchBarFrame = Frame(self.searchFrame,height = 10)
+        self.DongFrame = Frame(self.searchFrame, height=10)
+        self.TypeFrame = Frame(self.searchFrame, height=10)
+        self.SearchBarFrame = Frame(self.searchFrame, height=10)
 
         self.setinfoTreeview()
         self.searchBar = Entry(self.SearchBarFrame)
@@ -59,7 +59,7 @@ class Main:
         self.restartButton = Button(self.searchFrame, text="리셋", command=self.inputData)
         self.searchButton = Button(self.searchFrame, text="검색", command=self.search)
 
-        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12,height=5, textvariable=str)
+        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, height=5, textvariable=str)
         self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str)
 
         self.hintDongList = Label(self.DongFrame, text="동 이름", width=10, height=5)
@@ -126,6 +126,7 @@ class Main:
         self.TypeFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.DongFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
+
     # 표에 데이터 삽입
     def search(self):
         x = self.infoTreeview.get_children()
