@@ -21,13 +21,9 @@ def search():
 
     for i in range(len(treelist)):
         if treelist[i][0] is not None:
-            if str(treelist[i][0]).__contains__(searchBar.get()):
-                pass
-            if str(treelist[i][1]).__contains__(sector.get()):
-                pass
-
-
-    print(searchBar.get())
+            if str(treelist[i][0]).__contains__(searchBar.get()) and str(treelist[i][1]).__contains__(sector.get()) \
+                    and str(treelist[i][4]).__contains__(DetailType.get()):
+                treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
 
 
 def inputData():
@@ -65,24 +61,22 @@ searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
 # 콤보박스 부분 구현 - 업종
 sector = ttk.Combobox(searchFrame, width=12, textvariable=str)
 templist = list()
-templist.append("선택")
+templist.append("")
 templist += list(Induutype)
 sector['values'] = templist
 sector.current(0)
 sector.pack(side=RIGHT, expand=FALSE, fill=X)
 # 동 콤보박스
-#for i in range(len(treelist)):
-#   findDong = str(treelist[i][4]).split().index(1)
 dongSplited = list()
 dongList = set()
 for i in range(len(treelist)):
     if treelist[i][0] is not None:
         dongSplited = treelist[i][4].split()
-        if len(dongSplited) >= 2 and str(dongSplited[2]).__contains__("동") :
+        if len(dongSplited) >= 2 and str(dongSplited[2]).__contains__("동"):
             dongList.add(dongSplited[2])
 dongList = list(dongList)
 dongList.sort()
-dongList.insert(0,"동선택")
+dongList.insert(0, "")
 DetailType = ttk.Combobox(searchFrame, width=10, textvariable=str)
 DetailType['values'] = dongList
 DetailType.pack(side=RIGHT, expand=FALSE, fill=X)
@@ -110,7 +104,14 @@ treeview.heading("구주소", text="구주소", anchor="center")
 treeview.heading("위도", text="위도", anchor="center")
 treeview.heading("경도", text="경도", anchor="center")
 
+
 # init(데이터 불러오고 디스플레이 완료)
 
 
 # 선택시
+def selected(e):
+    selectedItem = treeview.item(treeview.selection())
+    print(selectedItem)
+
+
+treeview.bind("<Double-1>", selected)
