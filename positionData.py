@@ -110,7 +110,7 @@ treeview.heading("경도", text="경도", anchor="center")
 
 # 선택시
 def selected(e):
-    selectedItem = treeview.item(treeview.selection())
+    selectedItem = treeview.item(treeview.selection())['values']
     print(selectedItem)
 
 
