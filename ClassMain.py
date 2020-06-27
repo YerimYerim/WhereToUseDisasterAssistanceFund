@@ -88,10 +88,10 @@ class Main:
         # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
         self.infoTreeview.column("#0", width=50, )
         self.infoTreeview.heading("#0", text="번호", anchor="center")
-        self.infoTreeview.column("#2", width=200, anchor="center")
-        self.infoTreeview.heading("two", text="가게이름", anchor="center")
         self.infoTreeview.column("#1", width=200, anchor="center")
-        self.infoTreeview.heading("one", text="업종명", anchor="center")
+        self.infoTreeview.heading("one", text="가게이름", anchor="center")
+        self.infoTreeview.column("#2", width=200, anchor="center")
+        self.infoTreeview.heading("two", text="업종명", anchor="center")
         self.infoTreeview.column("#3", width=300, anchor="center")
         self.infoTreeview.heading("three", text="주소", anchor="center")
         self.infoTreeview.bind("<Double-1>", self.selected)
