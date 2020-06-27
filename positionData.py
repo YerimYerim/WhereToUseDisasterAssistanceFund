@@ -62,6 +62,8 @@ searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
 sector = ttk.Combobox(searchFrame, width=12, textvariable=str)
 templist = list()
 templist.append("")
+Induutype = list(Induutype)
+Induutype.sort()
 templist += list(Induutype)
 sector['values'] = templist
 sector.current(0)
@@ -99,10 +101,6 @@ treeview.heading("one", text="업종명", anchor="center")
 
 treeview.column("#3", width=300, anchor="center")
 treeview.heading("three", text="주소", anchor="center")
-
-treeview.heading("구주소", text="구주소", anchor="center")
-treeview.heading("위도", text="위도", anchor="center")
-treeview.heading("경도", text="경도", anchor="center")
 
 
 # init(데이터 불러오고 디스플레이 완료)
