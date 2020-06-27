@@ -1,9 +1,7 @@
 from tkinter import ttk
 
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
-import ET
-
-from WhereToUseDisasterAssistanceFund.init import *
+import xml.etree.ElementTree as ET
 from WhereToUseDisasterAssistanceFund.getMapData import *
 
 
