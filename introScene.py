@@ -1,22 +1,20 @@
 from tkinter import *
 
-from WhereToUseDisasterAssistanceFund.ClassMain import Main
+from WhereToUseDisasterAssistanceFund.ClassMain import MainScene
 
 
-class introScene:
-    def __init__(self, root):
+class introScene(Frame):
+    def __init__(self, master):
+        Frame.__init__(self, master)
         self.image = PhotoImage(file="background.png")
         self.onButtonImage = PhotoImage(file="onimage.png")
         self.exitButtonImage = PhotoImage(file="exitimage.png")
-        label = Label(root, image=self.image, bg='white')
-        onButton = Button(root, image=self.onButtonImage, command = self.mainScene)
-        exitButton = Button(root, image=self.exitButtonImage, command = self.exit)
-        label.pack(side=TOP)
-        onButton.pack(side=TOP)
-        exitButton.pack(side=BOTTOM)
+        self.label = Label(self, image=self.image, bg='white')
+        self.onButton = Button(self, image=self.onButtonImage, command=lambda: master.switch_frame(MainScene))
+        self.exitButton = Button(self, image=self.exitButtonImage, command=self.exit)
+        self.label.pack(side=TOP)
+        self.onButton.pack(side=TOP)
+        self.exitButton.pack(side=BOTTOM)
 
     def exit(self):
         exit()
-
-    def mainScene(self):
-        pass

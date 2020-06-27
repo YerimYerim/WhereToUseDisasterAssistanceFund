@@ -36,10 +36,10 @@ def GetDataFromURL(treelist, typeList):
         indexNum += 1
 
 
-class Main:
-    def __init__(self, root):
-
-        self.infoTreeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
+class MainScene(ttk.Frame):
+    def __init__(self, master):
+        ttk.Frame.__init__(self, master)
+        self.infoTreeview = ttk.Treeview(self, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                                          displaycolumns=["one", "two", "three"])
         self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.typeList = set()
@@ -47,7 +47,7 @@ class Main:
 
         GetDataFromURL(self.treelist, self.typeList)
         self.dong = set()
-        self.searchFrame = Frame(root)
+        self.searchFrame = Frame(self)
 
         self.DongFrame = Frame(self.searchFrame, height=10)
         self.TypeFrame = Frame(self.searchFrame, height=10)

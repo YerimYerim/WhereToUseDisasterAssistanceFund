@@ -1,13 +1,7 @@
-from WhereToUseDisasterAssistanceFund.ClassMain import Main
-from tkinter import *
+import tkinter as tk
+from tkinter import TRUE
 
-# ﻿GUI창을 생성하고 라벨을 설정한다.
-from WhereToUseDisasterAssistanceFund.introScene import introScene
+from WhereToUseDisasterAssistanceFund.SceneManager import SceneManager
 
-root = Tk()
-root.title("경기 지역화폐가맹점 검색 어플리케이션")
-root.geometry("1000x800+100+100")
-root.resizable(TRUE, TRUE)
-root.configure(bg = 'white')
-mainScene = introScene(root)
-root.mainloop()
+app = SceneManager()
+app.mainloop()
