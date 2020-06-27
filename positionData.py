@@ -78,9 +78,13 @@ dongList = set()
 for i in range(len(treelist)):
     if treelist[i][0] is not None:
         dongSplited = treelist[i][4].split()
-        dongList.add(dongSplited[2])
+        if len(dongSplited) >= 2 and str(dongSplited[2]).__contains__("동") :
+            dongList.add(dongSplited[2])
+dongList = list(dongList)
+dongList.sort()
+dongList.insert(0,"동선택")
 DetailType = ttk.Combobox(searchFrame, width=10, textvariable=str)
-DetailType['values'] = list(dongList)
+DetailType['values'] = dongList
 DetailType.pack(side=RIGHT, expand=FALSE, fill=X)
 DetailType.current(0)
 
