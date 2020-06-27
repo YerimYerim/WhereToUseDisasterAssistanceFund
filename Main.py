@@ -1,4 +1,4 @@
-from WhereToUseDisasterAssistanceFund.positionData import root, Main
+from WhereToUseDisasterAssistanceFund.ClassMain import root, Main
 
 mainScene = Main(root)
 root.mainloop()
