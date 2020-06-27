@@ -5,111 +5,94 @@ from WhereToUseDisasterAssistanceFund.GetData import *
 from WhereToUseDisasterAssistanceFund.init import *
 from WhereToUseDisasterAssistanceFund.getMapData import *
 
-treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
-                        displaycolumns=["one", "two", "three"])
-Induutype = set()
-treelist = list()
-GetDataFromURL(treelist, Induutype)
-dong = set()
 
+class Main:
+    def __init__(self, root):
+        self.infoTreeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
+                                    displaycolumns=["one", "two", "three"])
+        self.typeList = set()
+        self.treelist = list()
+        GetDataFromURL(self.treelist, self.typeList)
+        self.dong = set()
+        self.searchFrame = Frame(root)
+        self.infoTreeview = self.inputData()
+        self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
+        self.vbar.pack(side=RIGHT, fill=Y)
+        self.vbar.config(command=self.infoTreeview.yview)
+        # 표와 스크롤바 연동
+        self.infoTreeview.config(yscrollcommand=self.vbar.set)
+        self.infoTreeview.pack(side=BOTTOM, expand=True, fill=BOTH)
+        # 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
+        self.infoTreeview.column("#0", width=50, )
+        self.infoTreeview.heading("#0", text="번호", anchor="center")
 
-# 표에 데이터 삽입
-def search():
-    x = treeview.get_children()
-    for item in x:
-        treeview.delete(item)
+        self.infoTreeview.column("#2", width=200, anchor="center")
+        self.infoTreeview.heading("two", text="가게이름", anchor="center")
 
-    for i in range(len(treelist)):
-        if treelist[i][0] is not None:
-            if str(treelist[i][0]).__contains__(searchBar.get()) and str(treelist[i][1]).__contains__(sector.get()) \
-                    and str(treelist[i][4]).__contains__(DetailType.get()):
-                treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
+        self.infoTreeview.column("#1", width=200, anchor="center")
+        self.infoTreeview.heading("one", text="업종명", anchor="center")
 
+        self.infoTreeview.column("#3", width=300, anchor="center")
+        self.infoTreeview.heading("three", text="주소", anchor="center")
+        self.infoTreeview.bind("<Double-1>", self.selected)
+        # 검색버튼
+        self.searchBar = Entry(self.searchFrame)
+        self.restartButton = Button(self.searchFrame, text="리셋", command=self.inputData)
+        self.searchButton = Button(self.searchFrame, text="검색", command=self.search)
 
-def inputData():
-    x = treeview.get_children()
-    for item in x:
-        treeview.delete(item)
-    for i in range(len(treelist)):
-        if treelist[i][0] is not None:
-            treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
-    return treeview
+        # 콤보박스 부분 구현 - 업종
+        self.typeComboBox = ttk.Combobox(self.searchFrame, width=12, textvariable=str)
+        typeList = list(self.typeList)
+        typeList.sort()
+        typeList.insert(0, "")
+        self.typeComboBox['values'] = typeList
+        self.typeComboBox.current(0)
 
+        # 동 콤보박스
+        dongName = list()
+        dongList = set()
+        for i in range(len(self.treelist)):
+            if self.treelist[i][0] is not None:
+                dongName = self.treelist[i][4].split()
+                if len(dongName) >= 2 and str(dongName[2]).__contains__("동"):
+                    dongList.add(dongName[2])
+        dongList = list(dongList)
+        dongList.sort()
+        dongList.insert(0, "")
+        self.dongComboBox = ttk.Combobox(self.searchFrame, width=10, textvariable=str)
+        self.dongComboBox['values'] = dongList
+        self.dongComboBox.current(0)
 
-# 스크롤바
-treeview = inputData()
-vbar = Scrollbar(treeview, orient=VERTICAL)
-vbar.pack(side=RIGHT, fill=Y)
-vbar.config(command=treeview.yview)
-# 표와 스크롤바 연동
-treeview.config(yscrollcommand=vbar.set)
-treeview.pack(side=BOTTOM, expand=True, fill=BOTH)
-# Frame
-searchFrame = Frame(root)
-searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
-# 검색버튼
-searchBar = Entry(searchFrame)
-restartButton = Button(searchFrame, text="리셋", command=inputData)
-restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
+        # FRAME 내에 위치 잡기
+        self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
+        self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
+        self.searchButton.pack(side=RIGHT, expand=FALSE, fill=X)
+        self.searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
+        self.typeComboBox.pack(side=RIGHT, expand=FALSE, fill=X)
+        self.dongComboBox.pack(side=RIGHT, expand=FALSE, fill=X)
 
-l1 = Button(searchFrame, text="검색", command=search)
-l1.pack(side=RIGHT, expand=FALSE, fill=X)
+    # 표에 데이터 삽입
+    def search(self):
+        x = self.infoTreeview.get_children()
+        for item in x:
+            self.infoTreeview.delete(item)
 
-# 검색 창
+        for i in range(len(self.treelist)):
+            if self.treelist[i][0] is not None:
+                if str(self.treelist[i][0]).__contains__(self.searchBar.get()) and str(self.treelist[i][1]).__contains__(
+                        self.typeComboBox.get()) \
+                        and str(self.treelist[i][4]).__contains__(self.dongComboBox.get()):
+                    self.infoTreeview.insert('', 'end', text=i, values=self.treelist[i], iid=str(i) + "번")
 
-searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
-# 콤보박스 부분 구현 - 업종
-sector = ttk.Combobox(searchFrame, width=12, textvariable=str)
-templist = list()
-templist.append("")
-Induutype = list(Induutype)
-Induutype.sort()
-templist += list(Induutype)
-sector['values'] = templist
-sector.current(0)
-sector.pack(side=RIGHT, expand=FALSE, fill=X)
-# 동 콤보박스
-dongSplited = list()
-dongList = set()
-for i in range(len(treelist)):
-    if treelist[i][0] is not None:
-        dongSplited = treelist[i][4].split()
-        if len(dongSplited) >= 2 and str(dongSplited[2]).__contains__("동"):
-            dongList.add(dongSplited[2])
-dongList = list(dongList)
-dongList.sort()
-dongList.insert(0, "")
-DetailType = ttk.Combobox(searchFrame, width=10, textvariable=str)
-DetailType['values'] = dongList
-DetailType.pack(side=RIGHT, expand=FALSE, fill=X)
-DetailType.current(0)
+    def inputData(self):
+        x = self.infoTreeview.get_children()
+        for item in x:
+            self.infoTreeview.delete(item)
+        for i in range(len(self.treelist)):
+            if self.treelist[i][0] is not None:
+                self.infoTreeview.insert('', 'end', text=i, values=self.treelist[i], iid=str(i) + "번")
+        return self.infoTreeview
 
-# 지도
-# m_image = showMap(37.4387767330, 126.7820485341)  # 임의의 값, 검색 기능 구현 후 수정
-# label = Label(root, image=m_image, height=600, width=800)
-# label.pack(side=TOP, expand=True, fill=BOTH)
-
-# 각 컬럼 설정. 컬럼 이름, 컬럼 넓이, 정렬 등
-treeview.column("#0", width=50, )
-treeview.heading("#0", text="번호", anchor="center")
-
-treeview.column("#2", width=200, anchor="center")
-treeview.heading("two", text="가게이름", anchor="center")
-
-treeview.column("#1", width=200, anchor="center")
-treeview.heading("one", text="업종명", anchor="center")
-
-treeview.column("#3", width=300, anchor="center")
-treeview.heading("three", text="주소", anchor="center")
-
-
-# init(데이터 불러오고 디스플레이 완료)
-
-
-# 선택시
-def selected(e):
-    selectedItem = treeview.item(treeview.selection())['values']
-    print(selectedItem)
-
-
-treeview.bind("<Double-1>", selected)
+    def selected(self,e):
+        selectedItem = self.infoTreeview.item(self.infoTreeview.selection())['values']
+        print(selectedItem)
