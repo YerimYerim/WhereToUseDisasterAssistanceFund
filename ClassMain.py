@@ -48,9 +48,10 @@ class Main:
         GetDataFromURL(self.treelist, self.typeList)
         self.dong = set()
         self.searchFrame = Frame(root)
-        self.DongFrame = Frame(self.searchFrame)
-        self.TypeFrame = Frame(self.searchFrame)
-        self.SearchBarFrame = Frame(self.searchFrame)
+
+        self.DongFrame = Frame(self.searchFrame,height = 10)
+        self.TypeFrame = Frame(self.searchFrame,height = 10)
+        self.SearchBarFrame = Frame(self.searchFrame,height = 10)
 
         self.setinfoTreeview()
         self.searchBar = Entry(self.SearchBarFrame)
@@ -58,12 +59,12 @@ class Main:
         self.restartButton = Button(self.searchFrame, text="리셋", command=self.inputData)
         self.searchButton = Button(self.searchFrame, text="검색", command=self.search)
 
-        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, textvariable=str)
+        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12,height=5, textvariable=str)
         self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str)
 
-        self.hintDongList = Label(self.dongComboBox, text="동 이름", width=10, height=10)
-        self.hintTypeList = Label(self.typeComboBox, text="업종", width=10, height=10)
-        self.hintSearchList = Label(self.searchBar, text="검색창", width=10, height=10)
+        self.hintDongList = Label(self.DongFrame, text="동 이름", width=10, height=5)
+        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=5)
+        self.hintSearchList = Label(self.SearchBarFrame, text="검색창", width=10, height=5)
 
         # setting
         self.setTypeCombobox()
@@ -109,22 +110,22 @@ class Main:
         self.dongComboBox.current(0)
 
     def positioning(self):
-        self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
+
         self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchButton.pack(side=RIGHT, expand=FALSE, fill=X)
-        self.searchBar.pack(side=BOTTOM, expand=TRUE, fill=X)
 
+        self.searchBar.pack(side=BOTTOM, expand=TRUE, fill=X)
         self.typeComboBox.pack(side=BOTTOM, expand=FALSE, fill=X)
         self.dongComboBox.pack(side=BOTTOM, expand=FALSE, fill=X)
 
-        self.hintTypeList.pack(side=TOP, expand=FALSE, fill=X)
-        self.hintDongList.pack(side=TOP, expand=FALSE, fill=X)
-        self.hintSearchList.pack(side=TOP, expand=FALSE, fill=X)
+        self.hintTypeList.pack(side=BOTTOM, expand=FALSE, fill=X)
+        self.hintDongList.pack(side=BOTTOM, expand=FALSE, fill=X)
+        self.hintSearchList.pack(side=BOTTOM, expand=TRUE, fill=X)
 
-        self.SearchBarFrame(side=RIGHT, expand=FALSE, fill=X)
+        self.SearchBarFrame.pack(side=RIGHT, expand=TRUE, fill=X)
         self.TypeFrame.pack(side=RIGHT, expand=FALSE, fill=X)
-        self.DongFrame(side=RIGHT, expand=FALSE, fill=X)
-
+        self.DongFrame.pack(side=RIGHT, expand=FALSE, fill=X)
+        self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
     # 표에 데이터 삽입
     def search(self):
         x = self.infoTreeview.get_children()
