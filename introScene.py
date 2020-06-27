@@ -1,5 +1,7 @@
 from tkinter import *
 
+from WhereToUseDisasterAssistanceFund.ClassMain import Main
+
 
 class introScene:
     def __init__(self, root):
@@ -7,7 +9,7 @@ class introScene:
         self.onButtonImage = PhotoImage(file="onimage.png")
         self.exitButtonImage = PhotoImage(file="exitimage.png")
         label = Label(root, image=self.image, bg='white')
-        onButton = Button(root, image=self.onButtonImage)
+        onButton = Button(root, image=self.onButtonImage, command = self.mainScene)
         exitButton = Button(root, image=self.exitButtonImage, command = self.exit)
         label.pack(side=TOP)
         onButton.pack(side=TOP)
@@ -15,3 +17,6 @@ class introScene:
 
     def exit(self):
         exit()
+
+    def mainScene(self):
+        pass
