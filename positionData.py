@@ -10,6 +10,7 @@ treeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소
 Induutype = set()
 treelist = list()
 GetDataFromURL(treelist, Induutype)
+dong = set()
 
 
 # 표에 데이터 삽입
@@ -21,8 +22,11 @@ def search():
     for i in range(len(treelist)):
         if treelist[i][0] is not None:
             if str(treelist[i][0]).__contains__(searchBar.get()):
-                print(searchBar.get() + "찾음")
-                treeview.insert('', 'end', text=i, values=treelist[i], iid=str(i) + "번")
+                pass
+            if str(treelist[i][1]).__contains__(sector.get()):
+                pass
+
+
     print(searchBar.get())
 
 
@@ -60,12 +64,23 @@ l1.pack(side=RIGHT, expand=FALSE, fill=X)
 searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
 # 콤보박스 부분 구현 - 업종
 sector = ttk.Combobox(searchFrame, width=12, textvariable=str)
-sector['values'] = list(Induutype)
+templist = list()
+templist.append("선택")
+templist += list(Induutype)
+sector['values'] = templist
 sector.current(0)
 sector.pack(side=RIGHT, expand=FALSE, fill=X)
 # 동 콤보박스
+#for i in range(len(treelist)):
+#   findDong = str(treelist[i][4]).split().index(1)
+dongSplited = list()
+dongList = set()
+for i in range(len(treelist)):
+    if treelist[i][0] is not None:
+        dongSplited = treelist[i][4].split()
+        dongList.add(dongSplited[2])
 DetailType = ttk.Combobox(searchFrame, width=10, textvariable=str)
-DetailType['values'] = ('dd', 'ddd')
+DetailType['values'] = list(dongList)
 DetailType.pack(side=RIGHT, expand=FALSE, fill=X)
 DetailType.current(0)
 
