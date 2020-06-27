@@ -5,29 +5,60 @@ import xml.etree.ElementTree as ET
 from WhereToUseDisasterAssistanceFund.getMapData import *
 
 
+def GetDataFromURL(treelist, typeList):
+    indexNum = 1
+
+    while indexNum != 11:
+        url = "https://openapi.gg.go.kr/RegionMnyFacltStus?KEY=a7f5f144889643fcab0acf9caf2eccf8&pIndex=" \
+              + indexNum.__str__() + "&psize=1000&SIGUN_CD=41390"
+
+        request = ul.Request(url)  # url 데이터 요청
+        response = ul.urlopen(request)  # 요청받은 데이터 열어줌
+        res = response.getcode()  # 제대로 데이터가 수신됐는지 확인하는 코드 성공시 200
+
+        if res == 200:
+            responseData = response.read()
+            tree = ET.fromstring(responseData)
+
+            for node in tree:
+                n_name = node.findtext('CMPNM_NM')  # 상호명
+                n_indutype = node.findtext('INDUTYPE_NM')  # 업종명
+                if n_indutype is not None:
+                    typeList.add(n_indutype)
+                n_road_addr = node.findtext('REFINE_ROADNM_ADDR')  # 도로명주소
+                n_lotno_addr = node.findtext('REFINE_LOTNO_ADDR')  # 지번주소
+                n_lat = node.findtext('REFINE_WGS84_LAT')  # 위도
+                n_logt = node.findtext('REFINE_WGS84_LOGT')  # 경도
+                n_callNumber = node.findtext('TELNO')
+                data = [n_name, n_indutype, n_road_addr, n_callNumber, n_lotno_addr, n_lat, n_logt]
+                treelist.append(data)
+
+        indexNum += 1
+
+
 class Main:
     def __init__(self, root):
+
+        self.dongComboBox = ttk.Combobox(self.searchFrame, width=10, textvariable=str)
+        self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.infoTreeview = ttk.Treeview(root, columns=["one", "two", "three", "four", "구주소", "위도", "경도", ],
                                          displaycolumns=["one", "two", "three"])
         self.typeList = set()
         self.treelist = list()
-        self.GetDataFromURL(self.treelist, self.typeList)
+        GetDataFromURL(self.treelist, self.typeList)
         self.dong = set()
         self.searchFrame = Frame(root)
         self.setinfoTreeview()
         self.searchBar = Entry(self.searchFrame)
         self.restartButton = Button(self.searchFrame, text="리셋", command=self.inputData)
         self.searchButton = Button(self.searchFrame, text="검색", command=self.search)
-
-        # 콤보박스 부분 구현 - 업종
+        self.typeComboBox = ttk.Combobox(self.searchFrame, width=12, textvariable=str)
+        # setting
         self.setTypeCombobox()
-        # 동 콤보박스
         self.setDongCombobox()
-        # FRAME 내에 위치 잡기
         self.positioning()
 
     def setTypeCombobox(self):
-        self.typeComboBox = ttk.Combobox(self.searchFrame, width=12, textvariable=str)
         typeList = list(self.typeList)
         typeList.sort()
         typeList.insert(0, "")
@@ -36,7 +67,6 @@ class Main:
 
     def setinfoTreeview(self):
         self.infoTreeview = self.inputData()
-        self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.vbar.pack(side=RIGHT, fill=Y)
         self.vbar.config(command=self.infoTreeview.yview)
         # 표와 스크롤바 연동
@@ -63,7 +93,6 @@ class Main:
         dongList = list(dongList)
         dongList.sort()
         dongList.insert(0, "")
-        self.dongComboBox = ttk.Combobox(self.searchFrame, width=10, textvariable=str)
         self.dongComboBox['values'] = dongList
         self.dongComboBox.current(0)
 
@@ -74,36 +103,6 @@ class Main:
         self.searchBar.pack(side=RIGHT, expand=TRUE, fill=X)
         self.typeComboBox.pack(side=RIGHT, expand=FALSE, fill=X)
         self.dongComboBox.pack(side=RIGHT, expand=FALSE, fill=X)
-
-    def GetDataFromURL(self, treelist, typeList):
-        indexNum = 1
-
-        while indexNum != 11:
-            url = "https://openapi.gg.go.kr/RegionMnyFacltStus?KEY=a7f5f144889643fcab0acf9caf2eccf8&pIndex=" \
-                  + indexNum.__str__() + "&psize=1000&SIGUN_CD=41390"
-
-            request = ul.Request(url)  # url 데이터 요청
-            response = ul.urlopen(request)  # 요청받은 데이터 열어줌
-            res = response.getcode()  # 제대로 데이터가 수신됐는지 확인하는 코드 성공시 200
-
-            if res == 200:
-                responseData = response.read()
-                tree = ET.fromstring(responseData)
-
-                for node in tree:
-                    n_name = node.findtext('CMPNM_NM')  # 상호명
-                    n_indutype = node.findtext('INDUTYPE_NM')  # 업종명
-                    if n_indutype is not None:
-                        typeList.add(n_indutype)
-                    n_road_addr = node.findtext('REFINE_ROADNM_ADDR')  # 도로명주소
-                    n_lotno_addr = node.findtext('REFINE_LOTNO_ADDR')  # 지번주소
-                    n_lat = node.findtext('REFINE_WGS84_LAT')  # 위도
-                    n_logt = node.findtext('REFINE_WGS84_LOGT')  # 경도
-                    n_callNumber = node.findtext('TELNO')
-                    data = [n_name, n_indutype, n_road_addr, n_callNumber, n_lotno_addr, n_lat, n_logt]
-                    treelist.append(data)
-
-            indexNum += 1
 
     # 표에 데이터 삽입
     def search(self):
