@@ -16,6 +16,7 @@ class SceneManager(tk.Tk):
         self._frame.pack(side=BOTTOM, expand=TRUE, fill=BOTH)
 
     def switch_frame(self, frame_class):
+
         new_frame = frame_class(self)
         if self._frame is not None:
             self._frame.destroy()

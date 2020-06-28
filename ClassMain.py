@@ -1,3 +1,4 @@
+from threading import Thread
 from tkinter import ttk
 
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
@@ -44,14 +45,16 @@ class MainScene(ttk.Frame):
         self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.typeList = set()
         self.treelist = list()
+        self.th1 = Thread(target = GetDataFromURL,args = (self.treelist, self.typeList))
+        self.th1.start()
 
-        GetDataFromURL(self.treelist, self.typeList)
         self.dong = set()
         self.searchFrame = Frame(self)
 
         self.DongFrame = Frame(self.searchFrame, height=10)
         self.TypeFrame = Frame(self.searchFrame, height=10)
         self.SearchBarFrame = Frame(self.searchFrame, height=10)
+
 
         self.setinfoTreeview()
         self.searchBar = Entry(self.SearchBarFrame)
@@ -142,6 +145,7 @@ class MainScene(ttk.Frame):
                     self.infoTreeview.insert('', 'end', text=i, values=self.treelist[i], iid=str(i) + "번")
 
     def inputData(self):
+        self.th1.join()
         x = self.infoTreeview.get_children()
         for item in x:
             self.infoTreeview.delete(item)
