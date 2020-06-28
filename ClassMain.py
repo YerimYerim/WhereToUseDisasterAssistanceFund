@@ -45,7 +45,9 @@ class MainScene(ttk.Frame):
         self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.typeList = set()
         self.treelist = list()
-        self.th1 = Thread(target = GetDataFromURL,args = (self.treelist, self.typeList))
+        self.searchButtonImg = PhotoImage(file="searchbutton.png")
+        self.resetButtonImg = PhotoImage(file="resetbutton.png")
+        self.th1 = Thread(target=GetDataFromURL, args=(self.treelist, self.typeList))
         self.th1.start()
 
         self.dong = set()
@@ -62,23 +64,24 @@ class MainScene(ttk.Frame):
         self.map = ttk.Label(self.topFrame, image=self.map_image)
         self.map.pack()
 
-        self.DongFrame = Frame(self.searchFrame, height=10)
-        self.TypeFrame = Frame(self.searchFrame, height=10)
-        self.SearchBarFrame = Frame(self.searchFrame, height=10)
-
+        self.DongFrame = Frame(self.searchFrame, height=15, bg="white")
+        self.TypeFrame = Frame(self.searchFrame, height=15, bg="white")
+        self.SearchBarFrame = Frame(self.searchFrame, height=15, bg="white")
 
         self.setinfoTreeview()
-        self.searchBar = Entry(self.SearchBarFrame)
+        self.searchBar = Entry(self.SearchBarFrame,font=('08서울남산체 L', 12))
 
-        self.restartButton = Button(self.searchFrame, text="리셋", command=self.inputData)
-        self.searchButton = Button(self.searchFrame, text="검색", command=self.search)
+        self.restartButton = Button(self.searchFrame, image=self.resetButtonImg, command=self.inputData, bg="white")
+        self.searchButton = Button(self.searchFrame, image=self.searchButtonImg, command=self.search, bg="white")
 
-        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, height=5, textvariable=str)
-        self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str)
+        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, height=5, textvariable=str, font=('08서울남산체 L', 12))
+        self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str, font=('08서울남산체 L', 12))
 
-        self.hintDongList = Label(self.DongFrame, text="동 이름", width=10, height=1)
-        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=1)
-        self.hintSearchList = Label(self.SearchBarFrame, text="검색창", width=10, height=1)
+        self.hintDongList = Label(self.DongFrame, text="동", width=10, height=1, bg="white", font=('08서울남산체 L', 18))
+        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=1, bg="lightyellow",
+                                  font=('08서울남산체 L', 18))
+        self.hintSearchList = Label(self.SearchBarFrame, text="검색", width=10, height=1, bg="yellow",
+                                    font=('08서울남산체 L', 18))
 
         # setting
         self.setTypeCombobox()
@@ -123,7 +126,7 @@ class MainScene(ttk.Frame):
         self.dongComboBox['values'] = dongList
         self.dongComboBox.current(0)
 
-    def     positioning(self):
+    def positioning(self):
         self.topFrame.pack(side=TOP, expand=FALSE, fill=BOTH)
         self.map.pack(side=LEFT, expand=FALSE, fill=X)
         self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
@@ -141,7 +144,6 @@ class MainScene(ttk.Frame):
         self.TypeFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.DongFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
-
 
     # 표에 데이터 삽입
     def search(self):
@@ -174,5 +176,3 @@ class MainScene(ttk.Frame):
         self.map_image = showMap(selectedItem[5], selectedItem[6], 17)
         self.map.config(image=self.map_image)
         self.map.image = self.map_image
-
-
