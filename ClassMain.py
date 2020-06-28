@@ -4,7 +4,10 @@ from tkinter import ttk
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
 import xml.etree.ElementTree as ET
 from WhereToUseDisasterAssistanceFund.getMapData import *
+
 from urllib.parse import quote_plus
+import urllib.request as ul
+from site_packages.PIL import ImageTk, Image
 
 
 def GetDataFromURL(treelist, typeList):
@@ -38,8 +41,8 @@ def GetDataFromURL(treelist, typeList):
         indexNum += 1
 
 
-def showPlace(p_name):
-    url = "https://maps.googleapis.com/maps/api/place/textsearch/xml?&key=AIzaSyDKHC9dJVkD4MZt_c-aL1EUe5TRmdsRWtc&language=ko&query="\
+def getPlace(p_name):
+    url = "https://maps.googleapis.com/maps/api/place/textsearch/xml?&key=AIzaSyDKHC9dJVkD4MZt_c-aL1EUe5TRmdsRWtc&language=ko&query=" \
           + quote_plus(p_name)
 
     request = ul.Request(url)
@@ -48,17 +51,35 @@ def showPlace(p_name):
 
     if res == 200:
         responseData = response.read()
-        tree = ET.fromstring(responseData)
+        Data = ET.fromstring(responseData)
+
+        tree = Data.iter("result")
+        tree2 = Data.iter("photo")
+
+        m_photo = "CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU"
 
         for node in tree:
             n_name = node.findtext('name')  # 상호명
             n_road_addr = node.findtext('formatted_address')  # 도로명주소
             n_rating = node.findtext('rating')  # 평점
-            n_photo = node.findtext('photo_reference')  # 사진
-            n_place_id = node.findtext('place_id')  # place_id
+            for node2 in tree2:
+                m_photo = node2.findtext('photo_reference')
 
-            data = [n_name, n_road_addr, n_rating, n_photo, n_place_id]
-            print(data[0], data[1], data[2], data[3])
+            data = [n_name, n_road_addr, n_rating, m_photo]
+            print(data)
+            return data
+
+
+def getPhoto(photo_reference):
+    url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&key=AIzaSyDKHC9dJVkD4MZt_c-aL1EUe5TRmdsRWtc&photoreference=" \
+          + photo_reference.__str__()
+
+    with urllib.request.urlopen(url) as u:
+        raw_data = u.read()
+    im = Image.open(BytesIO(raw_data))
+    image = ImageTk.PhotoImage(im)
+
+    return image
 
 
 class MainScene(ttk.Frame):
@@ -69,13 +90,12 @@ class MainScene(ttk.Frame):
         self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.typeList = set()
         self.treelist = list()
-        self.th1 = Thread(target = GetDataFromURL,args = (self.treelist, self.typeList))
+        self.th1 = Thread(target=GetDataFromURL, args=(self.treelist, self.typeList))
         self.th1.start()
 
         self.dong = set()
         self.searchFrame = Frame(self)
 
-        # 원정
         self.topFrame = Frame(master)
 
         # map
@@ -83,15 +103,23 @@ class MainScene(ttk.Frame):
         self.logt = 127.1464824
 
         self.map_image = showMap(self.log, self.logt, 17)
-        self.map = ttk.Label(self.topFrame, image=self.map_image)
-        self.map.pack()
+        self.map = Label(self.topFrame, image=self.map_image)
 
         self.DongFrame = Frame(self.searchFrame, height=10)
         self.TypeFrame = Frame(self.searchFrame, height=10)
         self.SearchBarFrame = Frame(self.searchFrame, height=10)
 
         # Place 정보
+        self.name = '산기대'
+        self.addr = ''
+        self.rate = ''
+        self.photo = getPhoto(
+            'CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU')
 
+        self.p_name = Label(self.topFrame, text=self.name)
+        self.p_addr = Label(self.topFrame, text=self.addr)
+        self.p_rating = Label(self.topFrame, text=self.rate)
+        self.p_photo = Label(self.topFrame, image=self.photo, width=500, height=500)
 
         self.setinfoTreeview()
         self.searchBar = Entry(self.SearchBarFrame)
@@ -149,9 +177,14 @@ class MainScene(ttk.Frame):
         self.dongComboBox['values'] = dongList
         self.dongComboBox.current(0)
 
-    def     positioning(self):
+    def positioning(self):
         self.topFrame.pack(side=TOP, expand=FALSE, fill=BOTH)
         self.map.pack(side=LEFT, expand=FALSE, fill=X)
+        self.p_photo.pack(side=TOP, expand=FALSE, fill=X)
+        self.p_name.pack(side=TOP, expand=FALSE, fill=X)
+        self.p_addr.pack(side=TOP, expand=FALSE, fill=X)
+        self.p_rating.pack(side=TOP, expand=FALSE, fill=X)
+
         self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchButton.pack(side=RIGHT, expand=FALSE, fill=X)
 
@@ -167,7 +200,6 @@ class MainScene(ttk.Frame):
         self.TypeFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.DongFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
-
 
     # 표에 데이터 삽입
     def search(self):
@@ -200,9 +232,11 @@ class MainScene(ttk.Frame):
         self.map_image = showMap(selectedItem[5], selectedItem[6], 17)
         self.map.config(image=self.map_image)
         self.map.image = self.map_image
-        showPlace(selectedItem[0])
 
+        place = getPlace(selectedItem[0])
+        self.photo = getPhoto(place[3])
 
-
-
-
+        self.p_name.config(text=place[0])
+        self.p_addr.config(text=place[1])
+        self.p_rating.config(text=place[2])
+        self.p_photo.config(image=self.photo)
