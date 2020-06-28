@@ -49,6 +49,17 @@ class MainScene(ttk.Frame):
         self.dong = set()
         self.searchFrame = Frame(self)
 
+        # 원정
+        self.topFrame = Frame(self)
+
+        # map
+        self.log = 37.5492077
+        self.logt = 127.1464824
+
+        self.map_image = showMap(self.log, self.logt, 17)
+        self.map = ttk.Label(self.topFrame, image=self.map_image)
+        self.map.pack()
+
         self.DongFrame = Frame(self.searchFrame, height=10)
         self.TypeFrame = Frame(self.searchFrame, height=10)
         self.SearchBarFrame = Frame(self.searchFrame, height=10)
@@ -110,6 +121,7 @@ class MainScene(ttk.Frame):
         self.dongComboBox.current(0)
 
     def positioning(self):
+        self.topFrame.pack(side=LEFT, expand=FALSE, fill=X)
 
         self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchButton.pack(side=RIGHT, expand=FALSE, fill=X)
@@ -153,3 +165,9 @@ class MainScene(ttk.Frame):
     def selected(self, e):
         selectedItem = self.infoTreeview.item(self.infoTreeview.selection())['values']
         print(selectedItem)
+
+        self.map_image = showMap(selectedItem[5], selectedItem[6], 17)
+        self.map.config(image=self.map_image)
+        self.map.image = self.map_image
+
+
