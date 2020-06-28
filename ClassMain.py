@@ -70,7 +70,7 @@ def getPlace(p_name):
 
 
 def getPhoto(photo_reference):
-    url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=500&key=AIzaSyDKHC9dJVkD4MZt_c-aL1EUe5TRmdsRWtc&photoreference=" \
+    url = "https://maps.googleapis.com/maps/api/place/photo?maxheight=300&key=AIzaSyDKHC9dJVkD4MZt_c-aL1EUe5TRmdsRWtc&photoreference=" \
           + photo_reference.__str__()
 
     with urllib.request.urlopen(url) as u:
@@ -112,16 +112,12 @@ class MainScene(ttk.Frame):
         self.SearchBarFrame = Frame(self.searchFrame, height=10)
 
         # Place 정보
-        self.name = '산기대'
-        self.addr = ''
         self.rate = ''
         self.photo = getPhoto(
             'CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU')
 
-        self.p_name = Label(self.topFrame, text=self.name)
-        self.p_addr = Label(self.topFrame, text=self.addr)
-        self.p_rating = Label(self.topFrame, text=self.rate)
-        self.p_photo = Label(self.topFrame, image=self.photo, width=500, height=500)
+        self.p_rating = Label(self.topFrame, text="평점 : " + self.rate, height=10, font=(18))
+        self.p_photo = Label(self.topFrame, image=self.photo)
 
         self.DongFrame = Frame(self.searchFrame, height=15, bg="white")
         self.TypeFrame = Frame(self.searchFrame, height=15, bg="white")
@@ -189,8 +185,6 @@ class MainScene(ttk.Frame):
         self.topFrame.pack(side=TOP, expand=FALSE, fill=BOTH)
         self.map.pack(side=LEFT, expand=FALSE, fill=X)
         self.p_photo.pack(side=TOP, expand=FALSE, fill=X)
-        self.p_name.pack(side=TOP, expand=FALSE, fill=X)
-        self.p_addr.pack(side=TOP, expand=FALSE, fill=X)
         self.p_rating.pack(side=TOP, expand=FALSE, fill=X)
 
         self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
@@ -244,7 +238,5 @@ class MainScene(ttk.Frame):
         place = getPlace(selectedItem[0])
         self.photo = getPhoto(place[3])
 
-        self.p_name.config(text=place[0])
-        self.p_addr.config(text=place[1])
-        self.p_rating.config(text=place[2])
+        self.p_rating.config(text="평점 : " + place[2])
         self.p_photo.config(image=self.photo)
