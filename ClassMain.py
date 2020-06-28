@@ -76,9 +76,9 @@ class MainScene(ttk.Frame):
         self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, height=5, textvariable=str)
         self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str)
 
-        self.hintDongList = Label(self.DongFrame, text="동 이름", width=10, height=5)
-        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=5)
-        self.hintSearchList = Label(self.SearchBarFrame, text="검색창", width=10, height=5)
+        self.hintDongList = Label(self.DongFrame, text="동 이름", width=10, height=1)
+        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=1)
+        self.hintSearchList = Label(self.SearchBarFrame, text="검색창", width=10, height=1)
 
         # setting
         self.setTypeCombobox()
@@ -133,14 +133,15 @@ class MainScene(ttk.Frame):
         self.typeComboBox.pack(side=BOTTOM, expand=FALSE, fill=X)
         self.dongComboBox.pack(side=BOTTOM, expand=FALSE, fill=X)
 
-        self.hintTypeList.pack(side=BOTTOM, expand=FALSE, fill=X)
-        self.hintDongList.pack(side=BOTTOM, expand=FALSE, fill=X)
-        self.hintSearchList.pack(side=BOTTOM, expand=TRUE, fill=X)
+        self.hintTypeList.pack(side=TOP, expand=FALSE, fill=X)
+        self.hintDongList.pack(side=TOP, expand=FALSE, fill=X)
+        self.hintSearchList.pack(side=TOP, expand=TRUE, fill=X)
 
         self.SearchBarFrame.pack(side=RIGHT, expand=TRUE, fill=X)
         self.TypeFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.DongFrame.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchFrame.pack(side=BOTTOM, expand=FALSE, fill=X)
+
 
     # 표에 데이터 삽입
     def search(self):
