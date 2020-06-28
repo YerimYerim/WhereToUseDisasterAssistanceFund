@@ -4,6 +4,7 @@ from tkinter import ttk
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
 import xml.etree.ElementTree as ET
 from WhereToUseDisasterAssistanceFund.getMapData import *
+from urllib.parse import quote_plus
 
 
 def GetDataFromURL(treelist, typeList):
@@ -37,6 +38,29 @@ def GetDataFromURL(treelist, typeList):
         indexNum += 1
 
 
+def showPlace(p_name):
+    url = "https://maps.googleapis.com/maps/api/place/textsearch/xml?&key=AIzaSyDKHC9dJVkD4MZt_c-aL1EUe5TRmdsRWtc&language=ko&query="\
+          + quote_plus(p_name)
+
+    request = ul.Request(url)
+    response = ul.urlopen(request)
+    res = response.getcode()
+
+    if res == 200:
+        responseData = response.read()
+        tree = ET.fromstring(responseData)
+
+        for node in tree:
+            n_name = node.findtext('name')  # 상호명
+            n_road_addr = node.findtext('formatted_address')  # 도로명주소
+            n_rating = node.findtext('rating')  # 평점
+            n_photo = node.findtext('photo_reference')  # 사진
+            n_place_id = node.findtext('place_id')  # place_id
+
+            data = [n_name, n_road_addr, n_rating, n_photo, n_place_id]
+            print(data[0], data[1], data[2], data[3])
+
+
 class MainScene(ttk.Frame):
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
@@ -65,6 +89,8 @@ class MainScene(ttk.Frame):
         self.DongFrame = Frame(self.searchFrame, height=10)
         self.TypeFrame = Frame(self.searchFrame, height=10)
         self.SearchBarFrame = Frame(self.searchFrame, height=10)
+
+        # Place 정보
 
 
         self.setinfoTreeview()
@@ -174,5 +200,9 @@ class MainScene(ttk.Frame):
         self.map_image = showMap(selectedItem[5], selectedItem[6], 17)
         self.map.config(image=self.map_image)
         self.map.image = self.map_image
+        showPlace(selectedItem[0])
+
+
+
 
 
