@@ -52,7 +52,7 @@ class MainScene(ttk.Frame):
         self.searchFrame = Frame(self)
 
         # 원정
-        self.topFrame = Frame(self)
+        self.topFrame = Frame(master)
 
         # map
         self.log = 37.5492077
@@ -123,9 +123,9 @@ class MainScene(ttk.Frame):
         self.dongComboBox['values'] = dongList
         self.dongComboBox.current(0)
 
-    def positioning(self):
-        self.topFrame.pack(side=LEFT, expand=FALSE, fill=X)
-
+    def     positioning(self):
+        self.topFrame.pack(side=TOP, expand=FALSE, fill=BOTH)
+        self.map.pack(side=LEFT, expand=FALSE, fill=X)
         self.restartButton.pack(side=RIGHT, expand=FALSE, fill=X)
         self.searchButton.pack(side=RIGHT, expand=FALSE, fill=X)
 
