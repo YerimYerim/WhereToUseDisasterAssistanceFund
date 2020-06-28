@@ -4,7 +4,7 @@ import urllib.request as ul
 from tkinter import *
 from io import BytesIO
 import urllib
-from site_packages.PIL import ImageTk, Image
+from PIL import ImageTk, Image
 
 
 def showMap(m_lat, m_logt, m_zoom):
