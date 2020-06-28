@@ -13,7 +13,7 @@ class SceneManager(tk.Tk):
         self.configure(bg='white')
         self._frame = None
         self.switch_frame(introScene)
-        self._frame.pack()
+        self._frame.pack(side=BOTTOM, expand=TRUE, fill=BOTH)
 
     def switch_frame(self, frame_class):
         new_frame = frame_class(self)
