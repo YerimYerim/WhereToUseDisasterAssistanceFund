@@ -4,7 +4,6 @@ from tkinter import ttk
 # ﻿표 생성하기. colums는 컬럼 이름, displaycolums는 실행될 때 보여지는 순서다.
 import xml.etree.ElementTree as ET
 from WhereToUseDisasterAssistanceFund.getMapData import *
-
 from urllib.parse import quote_plus
 import urllib.request as ul
 from site_packages.PIL import ImageTk, Image
@@ -90,12 +89,15 @@ class MainScene(ttk.Frame):
         self.vbar = Scrollbar(self.infoTreeview, orient=VERTICAL)
         self.typeList = set()
         self.treelist = list()
+        self.searchButtonImg = PhotoImage(file="searchbutton.png")
+        self.resetButtonImg = PhotoImage(file="resetbutton.png")
         self.th1 = Thread(target=GetDataFromURL, args=(self.treelist, self.typeList))
         self.th1.start()
 
         self.dong = set()
         self.searchFrame = Frame(self)
 
+        # 원정
         self.topFrame = Frame(master)
 
         # map
@@ -121,18 +123,24 @@ class MainScene(ttk.Frame):
         self.p_rating = Label(self.topFrame, text=self.rate)
         self.p_photo = Label(self.topFrame, image=self.photo, width=500, height=500)
 
+        self.DongFrame = Frame(self.searchFrame, height=15, bg="white")
+        self.TypeFrame = Frame(self.searchFrame, height=15, bg="white")
+        self.SearchBarFrame = Frame(self.searchFrame, height=15, bg="white")
+
         self.setinfoTreeview()
         self.searchBar = Entry(self.SearchBarFrame)
 
-        self.restartButton = Button(self.searchFrame, text="리셋", command=self.inputData)
-        self.searchButton = Button(self.searchFrame, text="검색", command=self.search)
+        self.restartButton = Button(self.searchFrame, image=self.resetButtonImg, command=self.inputData, bg="white")
+        self.searchButton = Button(self.searchFrame, image=self.searchButtonImg, command=self.search, bg="white")
 
-        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, height=5, textvariable=str)
-        self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str)
+        self.typeComboBox = ttk.Combobox(self.TypeFrame, width=12, height=5, textvariable=str, font=('08서울남산체 L', 12))
+        self.dongComboBox = ttk.Combobox(self.DongFrame, width=10, height=5, textvariable=str, font=('08서울남산체 L', 12))
 
-        self.hintDongList = Label(self.DongFrame, text="동 이름", width=10, height=1)
-        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=1)
-        self.hintSearchList = Label(self.SearchBarFrame, text="검색창", width=10, height=1)
+        self.hintDongList = Label(self.DongFrame, text="동", width=10, height=1, bg="white", font=('08서울남산체 L', 18))
+        self.hintTypeList = Label(self.TypeFrame, text="업종", width=10, height=1, bg="lightyellow",
+                                  font=('08서울남산체 L', 18))
+        self.hintSearchList = Label(self.SearchBarFrame, text="검색", width=10, height=1, bg="yellow",
+                                    font=('08서울남산체 L', 18))
 
         # setting
         self.setTypeCombobox()
